@@ -10,7 +10,6 @@ from django.contrib.auth.models import User
 from django.test.client import Client
 from opaque_keys.edx.locations import SlashSeparatedCourseKey, AssetLocation
 
-from contentstore.utils import reverse_url
 from student.models import Registration
 from xmodule.modulestore.split_mongo.split import SplitMongoModuleStore
 from xmodule.contentstore.django import contentstore
@@ -20,6 +19,9 @@ from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
 from xmodule.modulestore.tests.factories import CourseFactory
 from xmodule.modulestore.xml_importer import import_course_from_xml
 from xmodule.modulestore.tests.utils import ProceduralCourseTestMixin
+
+from contentstore.utils import reverse_url
+from util.testing import UrlResetMixin
 
 TEST_DATA_DIR = settings.COMMON_TEST_DATA_ROOT
 
@@ -67,7 +69,7 @@ class AjaxEnabledTestClient(Client):
         return self.get(path, data or {}, follow, HTTP_ACCEPT="application/json", **extra)
 
 
-class CourseTestCase(ProceduralCourseTestMixin, ModuleStoreTestCase):
+class CourseTestCase(ProceduralCourseTestMixin, ModuleStoreTestCase, UrlResetMixin):
     """
     Base class for Studio tests that require a logged in user and a course.
     Also provides helper methods for manipulating and verifying the course.
