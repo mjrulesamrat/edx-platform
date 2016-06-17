@@ -121,7 +121,8 @@
                        return this;
                    },
 
-                   setActiveTab: function(index, focus) {
+                   setActiveTab: function(index, setFocus) {
+                       console.log(setFocus);
                        var tabMeta = this.getTabMeta(index),
                            tab = tabMeta.tab,
                            tabEl = tabMeta.element,
@@ -157,14 +158,14 @@
                             'aria-hidden': 'false',
                         });
                         
-                        if (focus) {
+                        if (setFocus) {
                             view.$el.focus();
                         }
                    },
 
-                   switchTab: function (event) {
+                   switchTab: function(event) {
                        event.preventDefault();
-                       this.setActiveTab($(event.currentTarget).data('index'), 'focus');
+                       this.setActiveTab($(event.currentTarget).data('index'), true);
                    },
                    
                    previousTab: function(focused, index, total, event) {
@@ -229,7 +230,7 @@
                                 
                             case keys.enter:
                             case keys.space:
-                                this.setActiveTab(tab, 'focus');
+                                this.setActiveTab(tab, true);
                                 break;
                                 
                             default:
