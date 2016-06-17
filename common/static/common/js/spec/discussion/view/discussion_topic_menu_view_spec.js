@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
-    describe('DiscussionTopicMenuView', function() {
-        beforeEach(function() {
+    describe('DiscussionTopicMenuView', function () {
+        beforeEach(function () {
             this.createTopicView = function (options) {
                 options = _.extend({
                     course_settings: this.course_settings,
@@ -58,16 +58,16 @@
             this.completeText = this.parentCategoryText + ' / ' + this.selectedOptionText;
         });
 
-        it('completely show parent category and sub-category', function() {
-          var dropdownText;
-          this.createTopicView();
-          this.view.maxNameWidth = this.defaultTextWidth + 1;
-          this.view.$el.find('a.topic-title').first().click();
-          dropdownText = this.view.$el.find('.js-selected-topic').text();
-          expect(this.completeText).toEqual(dropdownText);
+        it('completely show parent category and sub-category', function () {
+            var dropdownText;
+            this.createTopicView();
+            this.view.maxNameWidth = this.defaultTextWidth + 1;
+            this.view.$el.find('a.topic-title').first().click();
+            dropdownText = this.view.$el.find('.js-selected-topic').text();
+            expect(this.completeText).toEqual(dropdownText);
         });
 
-        it('completely show just sub-category', function() {
+        it('completely show just sub-category', function () {
             var dropdownText;
             this.createTopicView();
             this.view.maxNameWidth = this.defaultTextWidth - 10;
@@ -77,7 +77,7 @@
             expect(dropdownText).toContain(this.selectedOptionText);
         });
 
-        it('partially show sub-category', function() {
+        it('partially show sub-category', function () {
             this.createTopicView();
             var parentWidth = this.view.getNameWidth(this.parentCategoryText),
                 dropdownText;
@@ -88,7 +88,7 @@
             expect(dropdownText.lastIndexOf('…')).toBeGreaterThan(0);
         });
 
-        it('broken span doesn\'t occur', function() {
+        it('broken span doesn\'t occur', function () {
             var dropdownText;
             this.createTopicView();
             this.view.maxNameWidth = this.view.getNameWidth(this.selectedOptionText) + 100;
