@@ -1,4 +1,4 @@
-(function (Backbone) {
+(function () {
     'use strict';
     if (Backbone) {
         this.DiscussionTopicMenuView = Backbone.View.extend({
@@ -226,4 +226,4 @@
             }
         });
     }
-}).call(this, this.Backbone);
+}).call(window);
