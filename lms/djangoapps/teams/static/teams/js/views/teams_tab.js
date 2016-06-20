@@ -67,7 +67,8 @@
                     // name is being routed to.
                     router = this.router = new Backbone.Router();
                     _.each([
-                        ['content', _.bind(function () {
+                        [':default', _.bind(this.routeNotFound, this)],
+                        ['main', _.bind(function () {
                             // The backbone router unfortunately usurps the
                             // default behavior of in-page-links.  This hack
                             // prevents the screen reader in-page-link from
