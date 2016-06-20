@@ -71,7 +71,9 @@
                    initialize: function (options) {
                        this.router = options.router || null;
                        this.tabs = options.tabs;
-                       this.template = _.template(tabbedViewTemplate)({viewLabel: options.viewLabel});
+                       this.template = _.template(tabbedViewTemplate)({
+                           viewLabel: this.viewLabel
+                       });
                        // Convert each view into a TabPanelView
                        _.each(this.tabs, function(tabInfo, index) {
                            tabInfo.view = new TabPanelView({
