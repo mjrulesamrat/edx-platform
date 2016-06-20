@@ -67,7 +67,6 @@
                     // name is being routed to.
                     router = this.router = new Backbone.Router();
                     _.each([
-                        [':default', _.bind(this.routeNotFound, this)],
                         ['content', _.bind(function () {
                             // The backbone router unfortunately usurps the
                             // default behavior of in-page-links.  This hack
