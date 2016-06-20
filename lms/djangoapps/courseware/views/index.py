@@ -436,6 +436,8 @@ class CoursewareIndex(View):
                 table_of_contents['previous_of_active_section'],
                 table_of_contents['next_of_active_section'],
             )
+            # sections can hide data that masquerading staff should see
+            section_context['staff_masquerade'] = self.is_staff and self._is_masquerading_as_student()
             courseware_context['fragment'] = self.section.render(STUDENT_VIEW, section_context)
 
         return courseware_context

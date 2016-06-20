@@ -213,9 +213,10 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
         if self.is_time_limited:
             view_html = self._time_limited_student_view(context)
 
-            # Do we have an alternate rendering
-            # from the edx_proctoring subsystem?
-            if view_html:
+            masquerade_hidden = False
+            if view_html == 'masquerade_hidden':
+                masquerade_hidden = True
+            elif view_html:
                 fragment.add_content(view_html)
                 return fragment
 
@@ -249,6 +250,7 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
             'ajax_url': self.system.ajax_url,
             'next_url': context.get('next_url'),
             'prev_url': context.get('prev_url'),
+            'masquerade_hidden': masquerade_hidden,
         }
 
         fragment.add_content(self.system.render_template("seq_module.html", params))
@@ -358,7 +360,8 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
                     self.default_time_limit_minutes else 0
                 ),
                 'is_practice_exam': self.is_practice_exam,
-                'due_date': self.due
+                'due_date': self.due,
+                'staff_masquerade': context.get('staff_masquerade', False),
             }
 
             # inject the user's credit requirements and fulfillments

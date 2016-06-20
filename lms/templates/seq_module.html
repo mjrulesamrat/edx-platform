@@ -32,6 +32,13 @@
     <button class="sequence-nav-button button-next">
         <span class="icon fa fa-chevron-next" aria-hidden="true"></span><span class="sr">${_('Next')}</span>
     </button>
+    % if masquerade_hidden:
+        <div class="wrapper-notification">
+            <div class="copy">
+                ${_("This content is visible because you are masquerading; it is hidden to the student.")}
+            </div>
+        </div>
+    % endif
   </div>
 
   <div class="sr-is-focusable" tabindex="-1"></div>
