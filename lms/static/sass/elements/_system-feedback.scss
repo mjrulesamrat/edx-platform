@@ -719,6 +719,11 @@
       color: $pink;
     }
   }
+
+  &.wrapper-alert-freestanding {
+    margin-top: 10px;
+    border-radius: 10px;
+  }
 }
 
 // adopted alerts
