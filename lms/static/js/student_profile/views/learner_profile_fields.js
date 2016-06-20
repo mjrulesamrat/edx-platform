@@ -17,23 +17,25 @@
             },
 
             showNotificationMessage: function () {
-                var accountSettingsLink = StringUtils.interpolate('<a href="{url}">Account Settings page.</a>',
-                    {'url': this.options.accountSettingsPageUrl}
+                var accountSettingsLink = HtmlUtils.joinHtml(
+                    HtmlUtils.interpolateHtml(
+                        HtmlUtils.HTML('<a href="{settings_url}">', {settings_url: this.options.accountSettingsPageUrl})
+                    ),
+                    gettext('Account Settings page.'),
+                    HtmlUtils.HTML('</a>')
                 );
                 if (this.profileIsPrivate) {
                     this._super(
                         HtmlUtils.interpolateHtml(
-                            gettext("You must specify your birth year before you can share your full profile. " +
-                                "To specify your birth year, go to the {account_settings_page_link}"),
-                            {'account_settings_page_link': HtmlUtils.HTML(accountSettingsLink)}
+                            gettext("You must specify your birth year before you can share your full profile. To specify your birth year, go to the {account_settings_page_link}"), // jshint ignore:line
+                            {'account_settings_page_link':accountSettingsLink}
                         )
                     );
                 } else if (this.requiresParentalConsent) {
                     this._super(
                         HtmlUtils.interpolateHtml(
-                            gettext('You must be over 13 to share a full profile. If you are over 13, make sure that ' +
-                                'you have specified a birth year on the {account_settings_page_link}'),
-                            {'account_settings_page_link': HtmlUtils.HTML(accountSettingsLink)}
+                            gettext('You must be over 13 to share a full profile. If you are over 13, make sure that you have specified a birth year on the {account_settings_page_link}'), // jshint ignore:line
+                            {'account_settings_page_link': accountSettingsLink}
                         )
                     );
                 }
