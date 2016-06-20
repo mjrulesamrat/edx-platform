@@ -179,7 +179,6 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
 
     def student_view(self, context):
         display_items = self.get_display_items()
-        masquerade_hidden = False
 
         # If we're rendering this sequence, but no position is set yet,
         # or exceeds the length of the displayable items,
@@ -212,11 +211,13 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
 
         # Is this sequential part of a timed or proctored exam?
         if self.is_time_limited:
-            view_dict = self._time_limited_student_view(context)
+            view_html = self._time_limited_student_view(context)
 
-            masquerade_hidden = view_dict.get('masquerade_hidden', False)
-            if view_dict and not masquerade_hidden:
-                fragment.add_content(view_dict['html'])
+            masquerade_hidden = False
+            if view_html == 'masquerade_hidden':
+                masquerade_hidden = True
+            elif view_html:
+                fragment.add_content(view_html)
                 return fragment
 
         for child in display_items:
@@ -334,7 +335,7 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
         """
 
         # None = no overridden view rendering
-        view_dict = None
+        view_html = None
 
         proctoring_service = self.runtime.service(self, 'proctoring')
         credit_service = self.runtime.service(self, 'credit')
@@ -378,7 +379,7 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
             # This will return None if there is no
             # overridden view to display given the
             # current state of the user
-            view_dict = proctoring_service.get_student_view(
+            view_html = proctoring_service.get_student_view(
                 user_id=user_id,
                 course_id=course_id,
                 content_id=content_id,
@@ -386,7 +387,7 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
                 user_role=user_role_in_course
             )
 
-        return view_dict
+        return view_html
 
     def get_icon_class(self):
         child_classes = set(child.get_icon_class()
