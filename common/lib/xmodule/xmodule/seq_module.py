@@ -179,6 +179,7 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
 
     def student_view(self, context):
         display_items = self.get_display_items()
+        masquerade_hidden = False
 
         # If we're rendering this sequence, but no position is set yet,
         # or exceeds the length of the displayable items,
@@ -213,7 +214,6 @@ class SequenceModule(SequenceFields, ProctoringFields, XModule):
         if self.is_time_limited:
             view_html = self._time_limited_student_view(context)
 
-            masquerade_hidden = False
             if view_html == 'masquerade_hidden':
                 masquerade_hidden = True
             elif view_html:
