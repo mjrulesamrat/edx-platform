@@ -198,7 +198,8 @@ class CertificatesBaseTestCase(object):
 @ddt.ddt
 @override_settings(FEATURES=FEATURES_WITH_CERTS_ENABLED)
 class CertificatesListHandlerTestCase(
-            EventTestMixin, CourseTestCase, CertificatesBaseTestCase, HelperMethods, UrlResetMixin):
+        UrlResetMixin, EventTestMixin, CourseTestCase, CertificatesBaseTestCase, HelperMethods
+    ):
     """
     Test cases for certificates_list_handler.
     """
@@ -422,7 +423,8 @@ class CertificatesListHandlerTestCase(
 @ddt.ddt
 @override_settings(FEATURES=FEATURES_WITH_CERTS_ENABLED)
 class CertificatesDetailHandlerTestCase(
-            EventTestMixin, CourseTestCase, CertificatesBaseTestCase, HelperMethods, UrlResetMixin):
+        UrlResetMixin, EventTestMixin, CourseTestCase, CertificatesBaseTestCase, HelperMethods
+    ):
     """
     Test cases for CertificatesDetailHandlerTestCase.
     """
