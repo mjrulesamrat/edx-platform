@@ -17,7 +17,12 @@ def get_value(val_name, default=None, **kwargs):
     """
     This is a proxy function to hide microsite_configuration behind comprehensive theming.
     """
-    return microsite.get_value(val_name, default=default, **kwargs)
+    micro_value = microsite.get_value(val_name, default=default, **kwargs)
+
+    if default and type(default) is dict:
+        return default.update(micro_value)
+    else:
+        return micro_value
 
 
 def get_template_path(relative_path, **kwargs):
