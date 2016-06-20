@@ -20,7 +20,9 @@
                     'down':     40,
                     'up':       38,
                     'enter':    13,
-                    'space':    32
+                    'space':    32,
+                    'shift':    16,
+                    'tab':      9
                 };
                
                var getTabPanelId = function (id) {
@@ -103,26 +105,14 @@
                        // current route does not belong to one of the
                        // tabs.  Otherwise continue displaying the tab
                        // corresponding to the current URL.
-                       Backbone.history.navigate('');
-                        this.$('.tab:first')
-                            .addClass('is-active')
-                            .attr({
-                                'aria-expanded': 'true',
-                                'aria-selected': 'true',
-                                'tabindex': '0'
-                            });
-
-                        this.$('.tabpanel:first')
-                            .removeClass('is-hidden')
-                            .attr({
-                                'aria-hidden': 'false',
-                            });
+                       if (!(Backbone.history.getHash() in this.urlMap)) {
+                           this.setActiveTab(0);
+                       }
 
                        return this;
                    },
 
-                   setActiveTab: function(index, setFocus) {
-                       console.log(setFocus);
+                   setActiveTab: function(index) {
                        var tabMeta = this.getTabMeta(index),
                            tab = tabMeta.tab,
                            tabEl = tabMeta.element,
@@ -144,6 +134,10 @@
                         });
                        
                        // Show new tab/tabpanel
+                       if (this.router) {
+                           this.router.navigate(tab.url, { replace: true });
+                       }
+
                        tabEl
                         .addClass('is-active')
                         .attr({
@@ -156,19 +150,18 @@
                         .removeClass('is-hidden')
                         .attr({
                             'aria-hidden': 'false',
-                        });
-                        
-                        if (setFocus) {
-                            view.$el.focus();
-                        }
+                        })
+                        .focus();
                    },
 
                    switchTab: function(event) {
                        event.preventDefault();
-                       this.setActiveTab($(event.currentTarget).data('index'), true);
+                       this.setActiveTab($(event.currentTarget).data('index'));
                    },
                    
                    previousTab: function(focused, index, total, event) {
+                       event.preventDefault();
+
                         var tab, panel;
 
                         if (event.altKey || event.shiftKey) {
@@ -189,6 +182,8 @@
                    },
                    
                    nextTab: function(focused, index, total, event) {
+                       event.preventDefault();
+
                        var tab, panel;
 
                        if (event.altKey || event.shiftKey) {
@@ -209,8 +204,6 @@
                    },
                    
                    keydownHandler: function(event) {
-                       event.preventDefault();
-
                         var key = event.which,
                             focused = $(event.currentTarget),
                             index = $(focused).parent().find('.tab').index(focused),
@@ -230,7 +223,7 @@
                                 
                             case keys.enter:
                             case keys.space:
-                                this.setActiveTab(tab, true);
+                                this.setActiveTab(tab);
                                 break;
                                 
                             default:

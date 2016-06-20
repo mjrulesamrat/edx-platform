@@ -137,6 +137,7 @@
                         mainView: new TeamsTabbedView({
                             tabs: [{
                                 title: gettext('My Team'),
+                                url: 'my-teams',
                                 view: this.myTeamsView
                             }, {
                                 title: HtmlUtils.interpolateHtml(
@@ -149,6 +150,7 @@
                                         sr_end: HtmlUtils.HTML('</span>')
                                     }
                                 ),
+                                url: 'browse',
                                 view: this.topicsView
                             }],
                             router: this.router
@@ -578,12 +580,13 @@
                 /**
                  * Set up the tabbed view and switch tabs.
                  */
-                goToTab: function() {
+                goToTab: function(tab) {
                     this.mainView = this.tabbedView;
                     // Note that `render` should be called first so
                     // that the tabbed view's element is set
                     // correctly.
                     this.render();
+                    this.tabbedView.main.setActiveTab(tab);
                 },
 
                 // Error handling
