@@ -6,6 +6,7 @@ import requests
 from path import Path as path
 from ..common.utils import click_css
 from .course_page import CoursePage
+from lettuce import world
 
 
 class TextbookUploadPage(CoursePage):
@@ -46,8 +47,12 @@ class TextbookUploadPage(CoursePage):
 
         click_css(self, ".edit-textbook .action-upload", require_notification=False)
         self.wait_for_element_visibility(".upload-dialog input", "Upload modal opened")
+        world.capture_screenshot("open_modal")
+
         file_input = self.q(css=".upload-dialog input").results[0]
         file_input.send_keys(file_path)
+        world.capture_screenshot("type_name")
+
         click_css(self, ".wrapper-modal-window-assetupload .action-upload", require_notification=False)
         self.wait_for_element_absence(".modal-window-overlay", "Upload modal closed")
 
