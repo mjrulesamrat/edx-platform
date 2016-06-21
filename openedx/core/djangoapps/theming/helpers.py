@@ -20,7 +20,8 @@ def get_value(val_name, default=None, **kwargs):
     micro_value = microsite.get_value(val_name, default=default, **kwargs)
 
     if micro_value and default and type(default) is dict:
-        return default.update(micro_value)
+        new_dict = dict(default)
+        return new_dict.update(micro_value)
     else:
         return micro_value
 
