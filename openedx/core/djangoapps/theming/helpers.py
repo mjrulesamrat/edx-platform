@@ -1,9 +1,14 @@
 """
     Helpers for accessing comprehensive theming related variables.
 """
+import logging
+
+from django.conf import settings
+
 from microsite_configuration import microsite
 from microsite_configuration import page_title_breadcrumbs
-from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 def get_page_title_breadcrumbs(*args):
@@ -17,16 +22,29 @@ def get_value(val_name, default=None, **kwargs):
     """
     This is a proxy function to hide microsite_configuration behind comprehensive theming.
     """
-    micro_value = microsite.get_value(val_name, default=default, **kwargs)
+    # Attempt to retrieve the requested field/value from the microsite configuration
+    microsite_value = microsite.get_value(val_name, default=default, **kwargs)
+
+    # If we received a non-dictionary value from the microsite config workflow, return it immediately.
+    if not isinstance(microsite_value, dict):
+        return microsite_value
+
+    # Load the default configuration value so we can take a closer look
     if not default:
-        default_value = settings.val_name
+        default_dict = getattr(settings, val_name)
     else:
-        default_value = default
-    if micro_value and isinstance(default_value, dict):
-        new_dict = dict(default_value)
-        return new_dict.update(micro_value)
-    else:
-        return micro_value
+        default_dict = default
+
+    # If the default value is not a dictionary, something fishy is going on...
+    if not isinstance(default_value, dict):
+        msg = "Type for microsite setting '{name}' does not match the base setting type.".format(name=val_name)
+        logger.warn(msg)
+        return microsite_value
+
+    # We have two dicts at this point, so override some/all of the default dictionary
+    # with the microsite configuration dictionary's fields+values
+    override_dict = dict(default_dict)
+    return override_dict.update(microsite_value)
 
 
 def get_template_path(relative_path, **kwargs):
