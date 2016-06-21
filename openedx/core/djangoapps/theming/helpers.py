@@ -18,9 +18,12 @@ def get_value(val_name, default=None, **kwargs):
     This is a proxy function to hide microsite_configuration behind comprehensive theming.
     """
     micro_value = microsite.get_value(val_name, default=default, **kwargs)
-
-    if micro_value and default and isinstance(default, dict):
-        new_dict = dict(default)
+    if not default:
+        default_value = settings.val_name
+    else:
+        default_value = default
+    if micro_value and isinstance(default_value, dict):
+        new_dict = dict(default_value)
         return new_dict.update(micro_value)
     else:
         return micro_value
